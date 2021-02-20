@@ -42,7 +42,6 @@ class App extends Component {
     const id = uuidv4();
 
     this.props.addContact({ name, number, id });
-    // this.forceUpdate();
   };
 
   handleChangeFilter = e => {

@@ -1,6 +1,6 @@
 import { load } from '../utils/localStorage';
-import { createStore } from 'redux';
-import { types } from './actions';
+import { createReducer, configureStore } from '@reduxjs/toolkit';
+import { addContact, removeContact, filterContacts } from './actions';
 
 const items = load('Contacts') || [];
 
@@ -11,36 +11,22 @@ const InitialState = {
   },
 };
 
-const reducer = (state = InitialState, action) => {
-  const contacts = { ...state.contacts };
+const reducer = createReducer(InitialState, {
+  [addContact]: (state, action) => {
+    state.contacts.items.push(action.payload);
+  },
+  [removeContact]: (state, action) => {
+    state.contacts.items = state.contacts.items.filter(
+      item => item.id !== action.payload,
+    );
+  },
+  [filterContacts]: (state, action) => {
+    state.contacts.filter = action.payload;
+  },
+});
 
-  switch (action.type) {
-    case types.addContact:
-      const items = [...contacts.items, action.payload];
-      contacts.items = items;
-      return {
-        contacts,
-      };
-    case types.removeContact:
-      contacts.items = contacts.items.filter(
-        item => item.id !== action.payload,
-      );
-      return {
-        contacts,
-      };
-    case types.filterContacts:
-      contacts.filter = action.payload;
-      return {
-        contacts,
-      };
-    default:
-      return state;
-  }
-};
-
-const store = createStore(
+const store = configureStore({
   reducer,
-  window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__(),
-);
+});
 
 export default store;
