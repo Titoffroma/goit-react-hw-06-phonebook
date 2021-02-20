@@ -1,6 +1,7 @@
 import { Component, createRef } from 'react';
 import { Transition, CSSTransition } from 'react-transition-group';
 import { connect } from 'react-redux';
+import { addContact, removeContact, filterContacts } from '../../redux/actions';
 import PhonebookCard from '../PhonebookCard/PhonebookCardStyled';
 import Section from '../Section';
 import Form from '../Form';
@@ -138,21 +139,9 @@ const mapStateToProps = ({ contacts }) => ({
 });
 
 const mapDispatchToProps = dispatch => ({
-  addContact: newContact =>
-    dispatch({
-      type: 'ADD_CONTACT',
-      payload: newContact,
-    }),
-  removeContact: id =>
-    dispatch({
-      type: 'REMOVE_CONTACT',
-      payload: id,
-    }),
-  filterContacts: filter =>
-    dispatch({
-      type: 'FILTER_CONTACT',
-      payload: filter,
-    }),
+  addContact: newContact => dispatch(addContact(newContact)),
+  removeContact: id => dispatch(removeContact(id)),
+  filterContacts: filter => dispatch(filterContacts(filter)),
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(App);

@@ -1,5 +1,6 @@
 import { load } from '../utils/localStorage';
 import { createStore } from 'redux';
+import { types } from './actions';
 
 const items = load('Contacts') || [];
 
@@ -14,20 +15,20 @@ const reducer = (state = InitialState, action) => {
   const contacts = { ...state.contacts };
 
   switch (action.type) {
-    case 'ADD_CONTACT':
+    case types.addContact:
       const items = [...contacts.items, action.payload];
       contacts.items = items;
       return {
         contacts,
       };
-    case 'REMOVE_CONTACT':
+    case types.removeContact:
       contacts.items = contacts.items.filter(
         item => item.id !== action.payload,
       );
       return {
         contacts,
       };
-    case 'FILTER_CONTACT':
+    case types.filterContacts:
       contacts.filter = action.payload;
       return {
         contacts,
